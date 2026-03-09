@@ -1,0 +1,94 @@
+# -*- Makefile -*-
+#######################################################################
+#
+# DESCRIPTION: Verilator Example: Makefile for inside object directory
+#
+# This is executed in the object directory, and called by ../Makefile
+#
+# This file ONLY is placed under the Creative Commons Public Domain
+# SPDX-FileCopyrightText: 2020 Wilson Snyder
+# SPDX-License-Identifier: CC0-1.0
+#
+#######################################################################
+
+default: Vtop
+
+#定义默认构建目标为 Vtop（即生成的仿真可执行文件）。当在命令行直接执行 make 时，会尝试构建 Vtop。
+
+# Include the rules made by Verilator
+include Vtop.mk
+#Vtop.mk 是由 Verilator 在转换 Verilog 代码时自动生成的一个 Makefile 片段，它包含了：
+#源文件列表（生成的 C++ 代码、用户提供的 C++ 文件等）。
+#对象文件列表。
+#依赖关系。
+#链接规则和最终可执行文件的生成规则。
+#通过包含这个文件，本 Makefile 继承了 Verilator 自动计算的所有构建规则，无需手动编写。
+
+
+# Use OBJCACHE (ccache) if using gmake and its installed
+COMPILE.cc = $(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
+
+#这里重定义了 COMPILE.cc 变量（通常 Make 内置规则会用到的编译命令）。
+#$(OBJCACHE) 是一个环境变量，通常设置为 ccache（编译缓存工具），用于加速重复编译。
+#这条命令将 OBJCACHE 插入到编译命令的最前面，使得每次编译都会先通过缓存检查，如果已有缓存结果则直接复用，大大减少重复编译时间。
+
+#######################################################################
+# Compile flags
+
+# Turn on creating .d make dependency files
+CPPFLAGS += -MMD -MP
+#-MMD：告诉编译器生成一个 .d 依赖文件，记录源文件所包含的头文件依赖。
+
+#-MP：为每个依赖的头文件生成一个空的规则，避免因头文件被删除而导致的 make 错误。
+
+#这些依赖文件会在后续被自动包含，实现增量编译。
+
+# Compile in Verilator runtime debugging, so +verilator+debug works
+CPPFLAGS += -DVL_DEBUG=1
+
+#定义宏 VL_DEBUG=1，开启 Verilator 运行时的调试功能。这样在运行仿真时可以通过 +verilator+debug 等选项输出调试信息。
+
+# Turn on some more compiler lint flags (when configured appropriately)
+# For testing inside Verilator, "configure --enable-ccwarn" will do this
+# automatically; otherwise you may want this unconditionally enabled
+ifeq ($(CFG_WITH_CCWARN),yes)  # Local... Else don't burden users
+  USER_CPPFLAGS_WALL += -W -Werror -Wall
+endif
+
+#这是一个可选部分。CFG_WITH_CCWARN 可能由上级 Makefile 或配置脚本传入。如果为 yes，则添加一组严格的警告选项：
+#-W：启用额外警告。
+#-Werror：将所有警告当作错误处理。
+#-Wall：启用常用警告集合
+
+
+# See the benchmarking section of bin/verilator.
+# Support class optimizations.  This includes the tracing and symbol table.
+# SystemC takes minutes to optimize, thus it is off by default.
+OPT_SLOW =
+
+# Fast path optimizations.  Most time is spent in these classes.
+OPT_FAST = -Os -fstrict-aliasing
+#OPT_FAST = -O
+#OPT_FAST =
+
+##Verilator 生成的代码分为两类：慢速类（如波形跟踪、符号表等）和快速类（核心仿真循环）。
+##OPT_SLOW 默认为空，意味着对慢速类不进行额外优化（因为它们对性能影响小，且编译速度更重要）。
+##OPT_FAST 设置为 -Os -fstrict-aliasing：
+##-Os：优化生成代码的大小（有时也提升速度，尤其适合缓存较小的环境）。
+##-fstrict-aliasing：启用严格的别名规则优化，可能提升性能，但需确保代码符合标准。
+##注释掉的备选项说明可以根据需要调整优化级别（例如改为 -O2 追求速度）。
+
+
+######################################################################
+######################################################################
+# Automatically understand dependencies
+
+DEPS := $(wildcard *.d)
+ifneq ($(DEPS),)
+  include $(DEPS)
+endif
+
+##$(wildcard *.d) 获取当前目录下所有以 .d 结尾的文件（即由 -MMD 生成的依赖文件）。
+##如果存在任何 .d 文件，则使用 include 将它们包含进来，使得 make 能够根据头文件变化自动重新编译相应的源文件。
+##这样实现了精确的依赖追踪，当头文件更新时，只有依赖于它的源文件会被重新编译。
+
