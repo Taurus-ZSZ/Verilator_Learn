@@ -20,10 +20,14 @@ COCOTB_TEST_MODULES = simple_counter_testcases
 
 # ✅ 关键：将 trace 参数传递给 Verilator 的编译阶段
 # Cocotb 会自动将这些参数传递给 verilator 命令
-#EXTRA_ARGS += --trace --trace-fst
-EXTRA_ARGS += --trace-fst
+
+#EXTRA_ARGS += --trace-fst
 # 可选：优化编译速度 (Verilator 5.0 推荐)
 #EXTRA_ARGS += --fst
+# ✅ 新版推荐：通过 EXTRA_ARGS 传递所有波形选项
+EXTRA_ARGS += --trace              # 启用波形跟踪
+EXTRA_ARGS += --trace-fst           # 使用 FST 格式（更小更快）
+EXTRA_ARGS += --trace-structs       # （可选）跟踪结构体信息
 
 
 

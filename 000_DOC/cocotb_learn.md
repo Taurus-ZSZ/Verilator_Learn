@@ -12,7 +12,10 @@ python3 -m venv ~/my_py_env
 source ~/my_py_env/bin/activate
 #激活后terminal 前面显示 my_py_env
 
-安装cocotb
+#安装cocotb
+#cocotb 目前最高支持python13 但是我的是python14 所以需要
+
+#export COCOTB_IGNORE_PYTHON_REQUIRES=1
 
 pip install cocotb
 
@@ -20,7 +23,7 @@ pip install cocotb
 deactivate
 ```
 ## Cocotb 仿真整体流程
-    
+
     cocotb 是一个基于 Python 的协同仿真框架，它的核心思想是：将 Python 测试代码嵌入到硬件仿真器中运行，通过仿真器提供的编程接口（如 Verilog 的 VPI、VHDL 的 VHPI/FLI）来控制仿真时间、读写信号。整个流程通常由以下步骤组成：
 
 1. 编译硬件设计：调用仿真器（如 Verilator、Icarus Verilog、Questa 等）将你的 Verilog/VHDL 代码编译成可执行文件或库。
