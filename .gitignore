@@ -1,3 +1,25 @@
+# 忽略仿真构建目录
+sim/
+build/
+
+# 忽略Python缓存
+__pycache__/
+*.pyc
+.pytest_cache
+
+# 忽略编辑器文件
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# 忽略仿真产物
+*.vcd
+*.fst
+*.log
+results.xml
+
+
 # Prerequisites
 *.d
 
