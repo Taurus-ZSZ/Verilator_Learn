@@ -21,4 +21,21 @@ module top #(
 
     assign o_sum = {i_a[D_WIDTH-1],i_a} + {i_b[D_WIDTH-1],i_b};
 
+    //===================================================================
+    //=============== AMBA APB
+    //===================================================================
+
+test_apb_wrapper u_test_apb_wrapper(
+    .PCLK   (clk    ),
+    .PRESETn(rst_n  ),
+    .PSEL   (PSEL   ),
+    .PENABLE(PENABLE),
+    .PWRITE (PWRITE ),
+    .PADDR  (PADDR  ),
+    .PWDATA (PWDATA ),
+    .PRDATA (PRDATA ),
+    .PREADY (PREADY ),
+    .PSLVERR(PSLVERR)
+);
+
 endmodule

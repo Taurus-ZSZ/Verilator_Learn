@@ -27,8 +27,8 @@ module regblock(
     input                               clk                        ,
     input                               rst_n                      ,
 
-    input  logic [31:0]                 pwdin,
-    input  logic [15:0]                 sel_dn_en,
+    input  logic [31:0]                 PWDATAIn,
+    input  logic [15:0]                 sel_dn_wren,
     output logic [31:0]                 test_cfg_0,
     output logic [31:0]                 test_cfg_1,
     output logic [31:0]                 test_cfg_2,
@@ -52,8 +52,8 @@ always_ff @( posedge clk or negedge rst_n ) begin
     if (!rst_n) begin
         test_cfg_0 <= 'd0;
     end else begin
-        if (sel_dn_en[0]) begin
-            test_cfg_0 <= pwdin;
+        if (sel_dn_wren[0]) begin
+            test_cfg_0 <= PWDATAIn;
         end
     end
 end
@@ -62,8 +62,8 @@ always_ff @( posedge clk or negedge rst_n ) begin
     if (!rst_n) begin
         test_cfg_1 <= 'd0;
     end else begin
-        if (sel_dn_en[1]) begin
-            test_cfg_1 <= pwdin;
+        if (sel_dn_wren[1]) begin
+            test_cfg_1 <= PWDATAIn;
         end
     end
 end
@@ -72,8 +72,8 @@ always_ff @( posedge clk or negedge rst_n ) begin
     if (!rst_n) begin
         test_cfg_2 <= 'd0;
     end else begin
-        if (sel_dn_en[2]) begin
-            test_cfg_2 <= pwdin;
+        if (sel_dn_wren[2]) begin
+            test_cfg_2 <= PWDATAIn;
         end
     end
 end
@@ -82,8 +82,8 @@ always_ff @( posedge clk or negedge rst_n ) begin
     if (!rst_n) begin
         test_cfg_3 <= 'd0;
     end else begin
-        if (sel_dn_en[3]) begin
-            test_cfg_3 <= pwdin;
+        if (sel_dn_wren[3]) begin
+            test_cfg_3 <= PWDATAIn;
         end
     end
 end
@@ -92,8 +92,8 @@ always_ff @( posedge clk or negedge rst_n ) begin
     if (!rst_n) begin
         test_cfg_4 <= 'd0;
     end else begin
-        if (sel_dn_en[4]) begin
-            test_cfg_4 <= pwdin;
+        if (sel_dn_wren[4]) begin
+            test_cfg_4 <= PWDATAIn;
         end
     end
 end
@@ -101,8 +101,8 @@ always_ff @( posedge clk or negedge rst_n ) begin
     if (!rst_n) begin
         test_cfg_5 <= 'd0;
     end else begin
-        if (sel_dn_en[5]) begin
-            test_cfg_5 <= pwdin;
+        if (sel_dn_wren[5]) begin
+            test_cfg_5 <= PWDATAIn;
         end
     end
 end
@@ -111,8 +111,8 @@ always_ff @( posedge clk or negedge rst_n ) begin
     if (!rst_n) begin
         test_cfg_6 <= 'd0;
     end else begin
-        if (sel_dn_en[6]) begin
-            test_cfg_6 <= pwdin;
+        if (sel_dn_wren[6]) begin
+            test_cfg_6 <= PWDATAIn;
         end
     end
 end
@@ -121,8 +121,8 @@ always_ff @( posedge clk or negedge rst_n ) begin
     if (!rst_n) begin
         test_cfg_7 <= 'd0;
     end else begin
-        if (sel_dn_en[7]) begin
-            test_cfg_7 <= pwdin;
+        if (sel_dn_wren[7]) begin
+            test_cfg_7 <= PWDATAIn;
         end
     end
 end
@@ -131,8 +131,8 @@ always_ff @( posedge clk or negedge rst_n ) begin
     if (!rst_n) begin
         test_cfg_8 <= 'd0;
     end else begin
-        if (sel_dn_en[8]) begin
-            test_cfg_8 <= pwdin;
+        if (sel_dn_wren[8]) begin
+            test_cfg_8 <= PWDATAIn;
         end
     end
 end
@@ -141,8 +141,8 @@ always_ff @( posedge clk or negedge rst_n ) begin
     if (!rst_n) begin
         test_cfg_9 <= 'd0;
     end else begin
-        if (sel_dn_en[9]) begin
-            test_cfg_9 <= pwdin;
+        if (sel_dn_wren[9]) begin
+            test_cfg_9 <= PWDATAIn;
         end
     end
 end
@@ -151,8 +151,8 @@ always_ff @( posedge clk or negedge rst_n ) begin
     if (!rst_n) begin
         test_cfg_10 <= 'd0;
     end else begin
-        if (sel_dn_en[10]) begin
-            test_cfg_10 <= pwdin;
+        if (sel_dn_wren[10]) begin
+            test_cfg_10 <= PWDATAIn;
         end
     end
 end
@@ -161,8 +161,8 @@ always_ff @( posedge clk or negedge rst_n ) begin
     if (!rst_n) begin
         test_cfg_11 <= 'd0;
     end else begin
-        if (sel_dn_en[11]) begin
-            test_cfg_11 <= pwdin;
+        if (sel_dn_wren[11]) begin
+            test_cfg_11 <= PWDATAIn;
         end
     end
 end
@@ -171,8 +171,8 @@ always_ff @( posedge clk or negedge rst_n ) begin
     if (!rst_n) begin
         test_cfg_12 <= 'd0;
     end else begin
-        if (sel_dn_en[12]) begin
-            test_cfg_12 <= pwdin;
+        if (sel_dn_wren[12]) begin
+            test_cfg_12 <= PWDATAIn;
         end
     end
 end
@@ -181,8 +181,8 @@ always_ff @( posedge clk or negedge rst_n ) begin
     if (!rst_n) begin
         test_cfg_13 <= 'd0;
     end else begin
-        if (sel_dn_en[13]) begin
-            test_cfg_13 <= pwdin;
+        if (sel_dn_wren[13]) begin
+            test_cfg_13 <= PWDATAIn;
         end
     end
 end
@@ -191,8 +191,8 @@ always_ff @( posedge clk or negedge rst_n ) begin
     if (!rst_n) begin
         test_cfg_14 <= 'd0;
     end else begin
-        if (sel_dn_en[14]) begin
-            test_cfg_14 <= pwdin;
+        if (sel_dn_wren[14]) begin
+            test_cfg_14 <= PWDATAIn;
         end
     end
 end
@@ -201,8 +201,8 @@ always_ff @( posedge clk or negedge rst_n ) begin
     if (!rst_n) begin
         test_cfg_15 <= 'd0;
     end else begin
-        if (sel_dn_en[15]) begin
-            test_cfg_15 <= pwdin;
+        if (sel_dn_wren[15]) begin
+            test_cfg_15 <= PWDATAIn;
         end
     end
 end
