@@ -21,8 +21,7 @@ async def gen_clk(clk):
 async def test1(dut):
     logger = logging.getLogger("my_log")
 
-    logger.debug("this is a debug message ")
-    logger.info("this is an info message")
+    logger.debug("this is a debug message ") logger.info("this is an info message")
     logger.warning("this is a warning message")
     logger.error("this is an error message")
     logger.critical("this is an critical message")

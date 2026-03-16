@@ -24,7 +24,15 @@ module top #(
     //===================================================================
     //=============== AMBA APB
     //===================================================================
-
+    logic                        PCLK    ;
+    logic                        PSEL    ;
+    logic                        PENABLE ;
+    logic                        PWRITE  ;
+    logic [31:0]                 PADDR   ;
+    logic [31:0]                 PWDATA  ;
+    logic [31:0]                 PRDATA  ;
+    logic                        PREADY  ;
+    logic                        PSLVERR ;
 test_apb_wrapper u_test_apb_wrapper(
     .PCLK   (clk    ),
     .PRESETn(rst_n  ),

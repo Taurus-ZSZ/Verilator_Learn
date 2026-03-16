@@ -2,7 +2,7 @@ SIM ?= verilator
 TOPLEVEL_LANG ?= verilog
 
 # 默认目标：仿真计数器
-SIM_MODULE ?= counter
+SIM_MODULE ?= apb_test
 COCOTB_TOPLEVEL ?= top
 COCOTB_TEST_MODULES ?= counter.tt_test_counter
 
@@ -12,9 +12,20 @@ ifeq ($(SIM_MODULE),counter)
 	COCOTB_TEST_MODULES = tt_test_counter
     VERILOG_SOURCES = $(PWD)/01_hdl/top.sv
     VERILOG_SOURCES += $(PWD)/01_hdl/counter/counter.sv
+		export PYTHONPATH := $(PWD)/02_tb/py/counter:$(PYTHONPATH)
+else ifeq ($(SIM_MODULE),apb_test)
+    COCOTB_TOPLEVEL = top
+    COCOTB_TEST_MODULES = test_test_apb
+    VERILOG_SOURCES = $(PWD)/01_hdl/top.sv
+    VERILOG_SOURCES += $(PWD)/01_hdl/counter/counter.sv
+    VERILOG_SOURCES += $(PWD)/01_hdl/AMBA/APB/test_apb_wrapper.sv
+    VERILOG_SOURCES += $(PWD)/01_hdl/AMBA/APB/apb_if.sv
+    VERILOG_SOURCES += $(PWD)/01_hdl/AMBA/APB/regblock.sv
+		export PYTHONPATH := $(PWD)/02_tb/py/counter:$(PYTHONPATH)
+		export PYTHONPATH := $(PWD)/02_tb/py/apb:$(PYTHONPATH)
 else ifeq ($(SIM_MODULE),fifo)
-    COCOTB_TOPLEVEL = fifo
-    COCOTB_TEST_MODULES = fifo.test_fifo
+    COCOTB_TOPLEVEL = top
+    COCOTB_TEST_MODULES = test_test_apb.py
     VERILOG_SOURCES = $(PWD)/hdl/fifo/fifo.sv $(PWD)/hdl/fifo/fifo_ram.sv
 else ifeq ($(SIM_MODULE),alu)
     COCOTB_TOPLEVEL = alu
