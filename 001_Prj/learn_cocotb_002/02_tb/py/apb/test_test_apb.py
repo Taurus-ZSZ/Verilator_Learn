@@ -124,7 +124,7 @@ async def read_reg_sequence(dut):
         await apb_read_once(PSELn,addr,rd_data,
                        apb.PCLK,apb.PSEL,apb.PWRITE,apb.PENABLE,
                        apb.PREADY,apb.PADDR,apb.PWDATA)
-        cocotb.log.info("PADDR={:4d},PRDATA={:4d},PWRITE={:1d}".format(addr,wr_data,0))
+        cocotb.log.info("PADDR={:4d},PRDATA={:4d},PWRITE={:1d}".format(addr,rd_data,0))
     await Timer(1,"us")
 
 

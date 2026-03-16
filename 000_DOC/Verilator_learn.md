@@ -13,3 +13,7 @@ https://github.com/antmicro/uvm-verilator
 使用的是antmicro 下的一个uvm_verilator 的一个分支
 注意设置UVM_HOME 的环境变量。
 
+## 手动编译安装最新版本
+
+
+
