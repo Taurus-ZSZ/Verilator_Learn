@@ -1,0 +1,47 @@
+[*]
+[*] GTKWave Analyzer v4.0.0-prealpha (2617703+) (w)1999-2022 BSI
+[*] Tue Mar 17 02:14:02 2026
+[*]
+[dumpfile] "/mnt/c/Work/my_work/Verilator/Verilator_Learn/001_Prj/learn_cocotb_002/dump.fst"
+[dumpfile_mtime] "Tue Mar 17 02:00:35 2026"
+[dumpfile_size] 2688
+[savefile] "/mnt/c/Work/my_work/Verilator/Verilator_Learn/001_Prj/learn_cocotb_002/wave.gtkw"
+[timestart] 2554600
+[size] 1427 600
+[pos] -1 -1
+*-14.489891 2577800 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[treeopen] top.
+[treeopen] top.u_test_apb_wrapper.
+[sst_width] 297
+[signals_width] 166
+[sst_expanded] 1
+[sst_vpaned_height] 149
+@24
+top.u_test_apb_wrapper.PCLK
+top.u_test_apb_wrapper.PADDR[31:0]
+top.u_test_apb_wrapper.PWRITE
+top.u_test_apb_wrapper.PSEL
+top.u_test_apb_wrapper.PENABLE
+top.u_test_apb_wrapper.PRDATA[31:0]
+@25
+top.u_test_apb_wrapper.PREADY
+@24
+top.u_test_apb_wrapper.PWDATA[31:0]
+top.u_test_apb_wrapper.u_apb_if.test_cfg_0[31:0]
+top.u_test_apb_wrapper.u_apb_if.test_cfg_1[31:0]
+top.u_test_apb_wrapper.u_apb_if.test_cfg_2[31:0]
+top.u_test_apb_wrapper.u_apb_if.test_cfg_3[31:0]
+top.u_test_apb_wrapper.u_apb_if.test_cfg_4[31:0]
+top.u_test_apb_wrapper.u_apb_if.test_cfg_5[31:0]
+top.u_test_apb_wrapper.u_apb_if.test_cfg_6[31:0]
+top.u_test_apb_wrapper.u_apb_if.test_cfg_7[31:0]
+top.u_test_apb_wrapper.u_apb_if.test_cfg_8[31:0]
+top.u_test_apb_wrapper.u_apb_if.test_cfg_9[31:0]
+top.u_test_apb_wrapper.u_apb_if.test_cfg_10[31:0]
+top.u_test_apb_wrapper.u_apb_if.test_cfg_11[31:0]
+top.u_test_apb_wrapper.u_apb_if.test_cfg_12[31:0]
+top.u_test_apb_wrapper.u_apb_if.test_cfg_13[31:0]
+top.u_test_apb_wrapper.u_apb_if.test_cfg_14[31:0]
+top.u_test_apb_wrapper.u_apb_if.test_cfg_15[31:0]
+[pattern_trace] 1
+[pattern_trace] 0
