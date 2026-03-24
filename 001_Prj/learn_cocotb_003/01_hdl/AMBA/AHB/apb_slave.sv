@@ -1,4 +1,4 @@
-module apb_slave #(
+module ahb_slave #(
   parameter DATA_WIDTH = 32,
   parameter ADDR_WIDTH = 32
 )(
@@ -17,6 +17,8 @@ module apb_slave #(
   input logic HMASTLOCK ,
   input logic [ADDR_WIDTH-1:0] HADDR  ,
   input logic [DATA_WIDTH-1:0] HWDATA ,
+
+  input logic READY_CTRL,
 
   output logic HREADYOUT  ,
   output logic HRESP      ,
@@ -40,21 +42,44 @@ parameter HBURST_SINGLE = 3'b000,
           HBURST_INCR8  = 3'b101,
           HBURST_WRAP16 = 3'b110,
           HBURST_INCR16 = 3'b111;
-  
+parameter RESP_OKAY = 1'b0,
+          RESP_ERROR= 1'b1;
 
 logic [1:0] CS,NS;
 logic hrd_en,hwr_en;
-logic burst_undef_l_en;
 logic mbusy ;
 logic valid ;
 logic write ;
 logic [ADDR_WIDTH-1:0] address;
+logic [2:0] burst_d;
 
 logic [4:0] beat_num;
 logic [4:0] beat_cnt;
 
+logic trans_err_flag;
+logic last_beat_flag;
+
+//===============================================
+//============HREADYOUT assign===================
+//===============================================
+assign HREADYOUT = READY_CTRL;
+
+
 assign hrd_en = HREADY & HSELx & (!HWRITE) ;
 assign hwr_en = HREADY & HSELx & HWRITE ;
+
+// buf HBURST
+always_ff @(posedge HCLK or negedge HRESETn) begin 
+  if (!HRESETn) begin
+    burst_d <= 3'd0;
+  end else begin
+    if (HREADY) begin
+      burst_d <= HBURST;
+    end else begin
+      burst_d <= HBURST;
+    end
+  end
+end
 
 always_ff @(posedge HCLK or negedge HRESETn) begin 
   if (!HRESETn) begin
@@ -87,25 +112,51 @@ always_comb (*) begin : state_block
     end
     
     TRANS_PROC : begin
-      if ()
+      if (trans_idle_flag) begin
+        if (burst_d == HBURST_SINGLE) begin //不允许在单次传输后+busy传输
+          NS = TRANS_ERR;
+        end else begin
+          NS = IDLE;
+        end
+      end else if (trans_err_flag) begin
+        NS = TRANS_ERR;
+      end else begin
+        NS = TRANS_PROC;
+      end 
     end 
     
     TRANS_ERR : begin
-
+      if (trans_idle_flag) begin
+        NS = IDLE;
+      end else if ((hrd_en | hwr_en) &(trans_nonseq_flag)) begin
+        NS = TRANS_PROC; 
+      end else begin
+        NS = TRANS_ERR;
+      end
     end
     
-    default : 
+    default : NS = IDLE;
   endcase
   
 end
 
 always_ff @(posedge HCLK or negedge HRESETn) begin 
   if (!HRESETn) begin
-    <= 'd0;
+    HRESP <= 1'd0;
   end else begin
     case (CS)
-      
-      default : 
+      IDLE :begin
+        HRESP <= RESP_OKAY;
+      end
+      TRANS_PROC : begin
+        HRESP <= RESP_OKAY;
+      end
+      TRANS_ERR : begin
+          HRESP <= RESP_ERROR;
+      end
+      default : begin
+        HRESP <= RESP_OKAY;
+      end
     endcase
   end
 end
@@ -113,58 +164,83 @@ end
 always_ff @(posedge HCLK or negedge HRESETn) begin  
   if (HRESETn) begin
     beat_num <= 'd0;
+    beat_cnt <= 'd0;
     mbusy    <= 1'b0;
-    burst_undef_l_en<= 1'b0;
+    valid    <= 1'b0;
+    write    <= 1'b0;
+    address  <= 'd0;
+    last_beat_flag <= 1'b0;
   end else begin
     //trans first transfer  address phase get trans info
-    if ((hwr_en | hrd_en) & (trans_nonseq_flag)) begin 
+    if ((hwr_en | hrd_en) & (trans_nonseq_flag)) begin //T0
       mbusy   <= 1'b0;
       valid   <= 1'b1;
       write   <= HWRITE; 
       address <= HADDR ; //get base start address 
       case (HBURST) 
-        HBURST_INCR:begin
-          beat_nun <= 0;
-        end
         HBURST_SINGLE: begin
           beat_num <= 1;
+          last_beat_flag <= 1'b1;
+        end
+        HBURST_INCR:begin
+          beat_num <= 0;
+          last_beat_flag <= 1'b0;
         end
         HBURST_INCR4,HBURST_WRAP4 :begin
           beat_num <= 'd4;
+          last_beat_flag <= 1'b0;
         end 
         HBURST_INCR8,HBURST_WRAP8 :begin
           beat_num <= 'd8;
+          last_beat_flag <= 1'b0;
         end
         HBURST_INCR16,HBURST_WRAP16 :begin
           beat_num <= 'd16;
+          last_beat_flag <= 1'b0;
         end
-
-        default : 
+        default : begin
+          beat_num <= 'd16;
+          last_beat_flag <= 1'b0;
+        end
       endcase
-      if (HBURST == HBURST_INCR) begin
-        beat_num <= 'd0;
-        burst_undef_l_en <= 1'b1;
+    end else if (trans_seq_flag & HREADY) begin
+      mbusy    <= 1'b0;
+      if (last_beat_flag) begin
+        trans_err_flag <= 1'b1;
+        beat_cnt <= 'd0;
       end else begin
-        burst_undef_l_en <= 1'b0;
+        address <= HADDR;
+        if (beat_cnt == beat_num - 2) begin
+          last_beat_flag <= 1'b1;
+        end else begin
+          last_beat_flag <= 1'b0;
+        end
+        beat_cnt <= beat_cnt + 1'b1;
+        //for check address is error?
+        //if( (HBURST == HBURST_WRAP4)
+        //  ||(HBURST == HBURST_WRAP8)
+        //  ||(HBURST == HBURST_WRAP16)) begin
+        //  address <= address + N;
+        //end else begin
+        //  address <= address + ((32'd8) << (HSIZE));
+        //end
       end
-    end else if (trans_busy_flag) begin
-      mbusy   <= 1'b1;
-      if (HREADY) begin
-        address <= HADDR ;
-        write   <= HWRITE;
-      end else begin
-        address <= HADDR ;
-        write   <= HWRITE;
-      end 
-    end else if (trans_seq_flag) begin
-      if (HREADY & burst_undef_l_en) begin
-        address <= address + N;
-      end else begin
 
+    end else if (trans_busy_flag & HREADY) begin
+      mbusy   <= 1'b1;
+      address <= HADDR ;
+      write   <= HWRITE;
+      if (burst_d == HBURST_SINGLE) begin
+        trans_err_flag <= 1'b1;
       end 
+    end else if (trans_idle_flag & HREADY) begin
+      mbusy    <= 1'b0;
+      address  <= HADDR ;
+      beat_cnt <= 'd0;
+      trans_err_flag <= 1'b0;
+      last_beat_flag <= 1'b0;
     end
   end
-  
 end
 
 

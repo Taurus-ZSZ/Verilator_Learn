@@ -83,6 +83,21 @@ cocotb 基于 Python 的 asyncio 实现，但针对硬件仿真做了优化。�
 
 await 是协程之间协作的关键：遇到 await 时，当前协程让出控制权，事件循环调度其他就绪的协程运行，直到被等待的事件发生。
 
+### Cocotb 相关的库
+1. cocotb-bus 
+  - 已经停止维护,但是因为有其他的库在需要依赖该库,所以只是在修改可以到cocotb 2.0上运行
+2. cocotbext-ahb
+  - 地址 https://github.com/aignacio/cocotbext-ahb
+3. uvm-python
+  - 这个是一个1:1 使用python 实现UVM 的库,比较早期的库,然后已经不够活跃了
+4. pyuvm
+  - 地址 https://github.com/pyuvm/pyuvm
+  - 基于cocotb 的UVM 验证方法学
+  - 完整的UVM 架构
+5. cocotb与pyuvm
+  - cocotb 使用python 与async await 实现并发仿真 (协程的方式)，适合小型的验证如简单的模块级别的
+  - pyuvm 使用UVM 架构进行仿真 适合大的复杂的项目于环境
+
 ## GTKwave 编译
 
 ### 安装依赖
