@@ -11,7 +11,7 @@ class AHBConfig:
             "hsize":  "HSIZE",
             "hwdata": "HWDATA",
             "hrdata": "HRDATA",
-            "hready": "HREADYOUT",
+            "hready": "HREADY",
             "hresp":  "HRESP",
             "hsel":   "HSELx"
         }

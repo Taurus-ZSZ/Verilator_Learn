@@ -71,7 +71,8 @@ ahb_wrapper #(
 
     .READY_CTRL(READY_CTRL),
                           
-    .HREADYOUT (HREADYOUT ) ,
+    .HREADYOUT (HREADY ) ,
+    //.HREADYOUT (HREADYOUT ) ,
     .HRESP     (HRESP     ) ,
     .HRDATA    (HRDATA    )
 ); 

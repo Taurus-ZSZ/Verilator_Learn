@@ -8,7 +8,8 @@
 ### verilator 工程 
 1. learn_001 :使用CPP 仿真 简单的加法器
 ### cocotb 学习工程 
-1. learn_cocotb_001 : 使用verilator + cocotb 仿真counter 的仿真工程
-2. learn_cocotb_002 : 使用verilator + cocotb 仿真apb 的仿真工程
-3. learn_cocotb_003 : 使用verilator + cocotb 仿真ahb 的仿真工程，编写AHB 的slave 代码
+2. learn_cocotb_001 : 使用verilator + cocotb 仿真counter 的仿真工程
+3. learn_cocotb_002 : 使用verilator + cocotb 仿真apb 的仿真工程
+4. learn_cocotb_003 : 使用verilator + cocotb 仿真ahb 的仿真工程，编写AHB 的slave 代码
+  - 仿真命令: make SIM_MODULE=test_ahb
 

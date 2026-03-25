@@ -39,6 +39,8 @@ class AHBAgent:
         """构建组件 (Bus, Master, Monitor)"""
         if self._initialized:
             return
+
+        self.dut._log.info("正在构建 AHB Agent组件 (Master + Monitor)")
         
         # 1. 创建 Bus 映射 (方式 C)
         try:

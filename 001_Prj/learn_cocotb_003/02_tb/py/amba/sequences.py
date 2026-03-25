@@ -37,6 +37,7 @@ class NoiseBurstSequence(BaseSequence):
 class SingleRWSequence(BaseSequence):
     """单次读写序列"""
     async def run(self, addr, data):
+        self.agent.dut.READY_CTRL.value = 1
         self.agent.dut._log.info(f"运行单次写序列：Addr={hex(addr)}, Data={hex(data)}")
         resp = await self.agent.write(addr, data)
         assert resp[0]['resp'].name == 'OKAY'

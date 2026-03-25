@@ -13,8 +13,8 @@ class AHVEnv:
         self.agent = AHBAgent(dut, self.config)
 
     async def startup(self):
-        """环境启动流程：时钟 -> 复位 -> 构建"""
+        """环境启动流程： 构建 -> 时钟 -> 复位"""
+        self.agent.build()
         self.agent.start_clock()
         await self.agent.reset()
-        self.agent.build()
         self.dut._log.info("=== 验证环境启动完成 ===")
