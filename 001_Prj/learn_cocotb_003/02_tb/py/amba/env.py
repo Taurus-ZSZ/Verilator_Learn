@@ -1,6 +1,6 @@
 # tests/env.py
-from .config import AHBConfig
-from .ahb_agent import AHBAgent
+from amba.config import AHBConfig
+from amba.ahb_agent import AHBAgent
 
 class AHVEnv:
     """

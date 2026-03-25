@@ -1,3 +1,6 @@
+#使用方法
+#在工程目录下使用 make SIM_MODULE=test_ahb
+
 SIM ?= verilator
 TOPLEVEL_LANG ?= verilog
 
@@ -23,6 +26,20 @@ else ifeq ($(SIM_MODULE),apb_test)
     VERILOG_SOURCES += $(PWD)/01_hdl/AMBA/APB/regblock.sv
 		export PYTHONPATH := $(PWD)/02_tb/py/counter:$(PYTHONPATH)
 		export PYTHONPATH := $(PWD)/02_tb/py/apb:$(PYTHONPATH)
+else ifeq ($(SIM_MODULE),ahb_test)
+    COCOTB_TOPLEVEL = top
+    COCOTB_TEST_MODULES = amba.test_ahb_slave
+    VERILOG_SOURCES = $(PWD)/01_hdl/top.sv
+    VERILOG_SOURCES += $(PWD)/01_hdl/counter/counter.sv
+    VERILOG_SOURCES += $(PWD)/01_hdl/AMBA/ahb_wrapper.sv
+    VERILOG_SOURCES += $(PWD)/01_hdl/AMBA/AHB/ahb_slave.sv
+    VERILOG_SOURCES += $(PWD)/01_hdl/AMBA/APB/test_apb_wrapper.sv
+    VERILOG_SOURCES += $(PWD)/01_hdl/AMBA/APB/apb_if.sv
+    VERILOG_SOURCES += $(PWD)/01_hdl/AMBA/APB/regblock.sv
+		#export PYTHONPATH := $(PWD)/02_tb/py/counter:$(PYTHONPATH)
+		#export PYTHONPATH := $(PWD)/02_tb/py/apb:$(PYTHONPATH)
+		#export PYTHONPATH := $(PWD)/02_tb/py/amba:$(PYTHONPATH)
+		export PYTHONPATH := $(PWD)/02_tb/py:$(PYTHONPATH)
 else ifeq ($(SIM_MODULE),fifo)
     COCOTB_TOPLEVEL = top
     COCOTB_TEST_MODULES = test_test_apb.py

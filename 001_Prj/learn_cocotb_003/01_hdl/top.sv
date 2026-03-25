@@ -22,28 +22,58 @@ module top #(
     assign o_sum = {i_a[D_WIDTH-1],i_a} + {i_b[D_WIDTH-1],i_b};
 
     //===================================================================
-    //=============== AMBA APB
+    //=============== AMBA AHB
     //===================================================================
-    logic                        PCLK    ;
-    logic                        PSEL    ;
-    logic                        PENABLE ;
-    logic                        PWRITE  ;
-    logic [31:0]                 PADDR   ;
-    logic [31:0]                 PWDATA  ;
-    logic [31:0]                 PRDATA  ;
-    logic                        PREADY  ;
-    logic                        PSLVERR ;
-test_apb_wrapper u_test_apb_wrapper(
-    .PCLK   (clk    ),
-    .PRESETn(rst_n  ),
-    .PSEL   (PSEL   ),
-    .PENABLE(PENABLE),
-    .PWRITE (PWRITE ),
-    .PADDR  (PADDR  ),
-    .PWDATA (PWDATA ),
-    .PRDATA (PRDATA ),
-    .PREADY (PREADY ),
-    .PSLVERR(PSLVERR)
-);
+  parameter DATA_WIDTH = 32;
+  parameter ADDR_WIDTH = 32;
+ 
+  logic HCLK    ;
+  logic HRESETn ;
+  logic HSELx   ;
+  //address and control siangal
+  logic HWRITE  ;
+  logic HREADY  ;
+  logic [2:0] HSIZE ;
+  logic [2:0] HBURST; 
+  logic [3:0] HPROT;
+  logic [1:0] HTRANS  ;
+  logic HMASTLOCK ;
+  logic [ADDR_WIDTH-1:0] HADDR  ;
+  logic [DATA_WIDTH-1:0] HWDATA ;
+
+  logic READY_CTRL;
+
+  logic HREADYOUT  ;
+  logic HRESP      ;
+  logic [DATA_WIDTH-1:0] HRDATA;
+
+
+//assign HCLK = clk;
+//assign HRESETn= rst_n;
+
+ahb_wrapper #(
+  .DATA_WIDTH (DATA_WIDTH),
+  .ADDR_WIDTH (ADDR_WIDTH)
+  ) u_ahb_wrapper (
+    .HCLK    (HCLK   ),
+    .HRESETn (HRESETn),
+    .HSELx   (HSELx  ),
+  //address and control siangal
+    .HWRITE   (HWRITE   ) ,
+    .HREADY   (HREADY   ) ,
+    .HSIZE    (HSIZE    ) ,
+    .HBURST   (HBURST   ) , 
+    .HPROT    (HPROT    ) ,
+    .HTRANS   (HTRANS   ) ,
+    .HMASTLOCK(HMASTLOCK) ,
+    .HADDR    (HADDR    ) ,
+    .HWDATA   (HWDATA   ) ,
+
+    .READY_CTRL(READY_CTRL),
+                          
+    .HREADYOUT (HREADYOUT ) ,
+    .HRESP     (HRESP     ) ,
+    .HRDATA    (HRDATA    )
+); 
 
 endmodule

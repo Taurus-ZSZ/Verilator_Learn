@@ -3,17 +3,17 @@ class AHBConfig:
     def __init__(self):
         # 信号映射 (方式 C)
         self.signal_map = {
-            "hclk": "clk_sys",
-            "hresetn": "rst_n",
-            "haddr": "h_addr",
-            "hwrite": "h_write",
-            "htrans": "h_trans",
-            "hsize": "h_size",
-            "hwdata": "h_wdata",
-            "hrdata": "h_rdata",
-            "hready": "h_ready_out",
-            "hresp": "h_resp",
-            "hsel": "h_sel"
+            "hclk":   "HCLK",
+            "hresetn":"HRESETn",
+            "haddr":  "HADDR",
+            "hwrite": "HWRITE",
+            "htrans": "HTRANS",
+            "hsize":  "HSIZE",
+            "hwdata": "HWDATA",
+            "hrdata": "HRDATA",
+            "hready": "HREADYOUT",
+            "hresp":  "HRESP",
+            "hsel":   "HSELx"
         }
         # 业务参数
         self.clock_period_ns = 10

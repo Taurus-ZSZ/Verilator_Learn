@@ -3,7 +3,7 @@ import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import ClockCycles
 from cocotbext.ahb import AHBBus, AHBLiteMaster, AHBMonitor, AHBResp
-from .config import AHBConfig
+from amba.config import AHBConfig
 
 class AHBAgent:
     """
@@ -32,7 +32,7 @@ class AHBAgent:
     def start_clock(self):
         """启动时钟"""
         clk_sig = getattr(self.dut, self.config.signal_map["hclk"])
-        cocotb.start_soon(Clock(clk_sig, self.config.clock_period_ns, units="ns").start())
+        cocotb.start_soon(Clock(clk_sig, self.config.clock_period_ns, unit="ns").start())
         self.dut._log.info(f"时钟已启动，周期={self.config.clock_period_ns}ns")
 
     def build(self):
@@ -60,7 +60,7 @@ class AHBAgent:
             bus=self.bus,
             clock=clk_sig,
             reset=rst_sig,
-            reset_active_level=1,
+            reset_active_level=0,
             timeout=self.config.timeout_cycles,
             name="ahb_master"
         )
@@ -70,9 +70,10 @@ class AHBAgent:
             bus=self.bus,
             clock=clk_sig,
             reset=rst_sig,
-            reset_active_level=1,
-            callback=self._monitor_callback, # 可以定义回调处理捕获的数据
-            name="ahb_monitor"
+            #reset_active_level=1,
+            prefix="",
+            callback=self._monitor_callback # 可以定义回调处理捕获的数据
+            #name="ahb_monitor"
         )
 
         self._initialized = True

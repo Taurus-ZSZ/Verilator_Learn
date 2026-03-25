@@ -44,6 +44,9 @@ parameter HBURST_SINGLE = 3'b000,
           HBURST_INCR16 = 3'b111;
 parameter RESP_OKAY = 1'b0,
           RESP_ERROR= 1'b1;
+parameter IDLE        = 2'b00,
+          TRANS_PROC  = 2'b01,
+          TRANS_ERR   = 2'b10;
 
 logic [1:0] CS,NS;
 logic hrd_en,hwr_en;
@@ -99,8 +102,7 @@ assign trans_idle_flag   = HSELx & (HTRANS == HTRANS_IDLE);
 assign trans_seq_flag    = HSELx & (HTRANS == HTRANS_SEQ);
 assign trans_busy_flag   = HSELx & (HTRANS == HTRANS_BUSY);;
 
-
-always_comb (*) begin : state_block
+always_comb begin : state_block
 
   case (CS)
     IDLE : begin

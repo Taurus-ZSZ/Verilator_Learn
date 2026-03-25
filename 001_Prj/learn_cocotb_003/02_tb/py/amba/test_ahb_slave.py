@@ -1,6 +1,6 @@
 import cocotb
-from .env import AHVEnv
-from .sequences import SingleRWSequence, NoiseBurstSequence
+from amba.env import AHVEnv
+from amba.sequences import SingleRWSequence, NoiseBurstSequence
 
 @cocotb.test()
 async def test_single_rw(dut):

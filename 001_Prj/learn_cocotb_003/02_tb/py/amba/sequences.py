@@ -1,6 +1,6 @@
 # tests/sequences.py
 import numpy as np
-from .config import AHBConfig
+from amba.config import AHBConfig
 
 class BaseSequence:
     def __init__(self, agent, config: AHBConfig):

@@ -2,32 +2,50 @@ module ahb_wrapper #(
   parameter DATA_WIDTH = 32,
   parameter ADDR_WIDTH = 32
   ) (
-    input logic HCLK,
-  input logic HRESETn ,
-  ports
+    // global siangal 
+    input logic HCLK  ,
+    input logic HRESETn ,
+    
+    input logic HSELx ,
+    //address and control siangal
+    input logic HWRITE  ,
+    input logic HREADY  ,
+    input logic [2:0] HSIZE ,
+    input logic [2:0] HBURST, 
+    input logic [3:0] HPROT,
+    input logic [1:0] HTRANS  ,
+    input logic HMASTLOCK ,
+    input logic [ADDR_WIDTH-1:0] HADDR  ,
+    input logic [DATA_WIDTH-1:0] HWDATA ,
+    
+    input logic READY_CTRL,
+    
+    output logic HREADYOUT  ,
+    output logic HRESP      ,
+    output logic [DATA_WIDTH-1:0] HRDATA
 ); 
 //===================================================================
 //=============== AMBA AHB Slave
 //===================================================================
 // global siangal 
 
-  logic HSELx ;
-  //address and control siangal
-  logic HWRITE  ;
-  logic HREADY  ;
-  logic [2:0] HSIZE ;
-  logic [2:0] HBURST; 
-  logic [3:0] HPROT;
-  logic [1:0] HTRANS  ;
-  logic HMASTLOCK ;
-  logic [ADDR_WIDTH-1:0] HADDR  ;
-  logic [DATA_WIDTH-1:0] HWDATA ;
+  //logic HSELx ;
+  ////address and control siangal
+  //logic HWRITE  ;
+  //logic HREADY  ;
+  //logic [2:0] HSIZE ;
+  //logic [2:0] HBURST; 
+  //logic [3:0] HPROT;
+  //logic [1:0] HTRANS  ;
+  //logic HMASTLOCK ;
+  //logic [ADDR_WIDTH-1:0] HADDR  ;
+  //logic [DATA_WIDTH-1:0] HWDATA ;
 
-  logic READY_CTRL;
+  //logic READY_CTRL;
 
-  logic HREADYOUT  ;
-  logic HRESP      ;
-  logic [DATA_WIDTH-1:0] HRDATA;
+  //logic HREADYOUT  ;
+  //logic HRESP      ;
+  //logic [DATA_WIDTH-1:0] HRDATA;
 
 
 ahb_slave #(
@@ -35,10 +53,10 @@ ahb_slave #(
   .ADDR_WIDTH (ADDR_WIDTH)
 )u1_ahb_slave(
   // global siangal 
-  .HCLK    ,
-  .HRESETn ,
+  .HCLK    (HCLK),
+  .HRESETn (HRESETn),
 
-  .HSELx   ,
+  .HSELx   (HSELx),
   //address and control siangal
   .HWRITE   (HWRITE   ) ,
   .HREADY   (HREADY   ) ,
