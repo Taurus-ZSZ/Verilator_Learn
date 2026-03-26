@@ -5,9 +5,9 @@ SIM ?= verilator
 TOPLEVEL_LANG ?= verilog
 
 # 默认目标：仿真计数器
-SIM_MODULE ?= apb_test
+SIM_MODULE ?= ahb_test
 COCOTB_TOPLEVEL ?= top
-COCOTB_TEST_MODULES ?= counter.tt_test_counter
+COCOTB_TEST_MODULES ?= amba.test_ahb_slave
 
 # 根据模块设置 HDL 源文件路径
 ifeq ($(SIM_MODULE),counter)

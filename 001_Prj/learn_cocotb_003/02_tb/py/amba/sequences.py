@@ -34,14 +34,29 @@ class NoiseBurstSequence(BaseSequence):
         self.agent.dut._log.info("噪声突发序列执行成功")
         return data, addr_list
 
+
 class SingleRWSequence(BaseSequence):
     """单次读写序列"""
     async def run(self, addr, data):
-        self.agent.dut.READY_CTRL.value = 1
         self.agent.dut._log.info(f"运行单次写序列：Addr={hex(addr)}, Data={hex(data)}")
+        
+        # 执行写
         resp = await self.agent.write(addr, data)
-        assert resp[0]['resp'].name == 'OKAY'
+        assert resp[0]['resp'].name == 'OKAY', f"写操作失败：{resp[0]['resp']}"
         
         self.agent.dut._log.info(f"运行单次读序列：Addr={hex(addr)}")
+        
+        # 执行读
         read_resp = await self.agent.read(addr)
-        return read_resp[0]['data']
+        
+        # 【关键修复】
+        # 1. 获取返回的字典中的 'data' 字段 (这是一个字符串，如 "0xdeadbeef")
+        raw_data_str = read_resp[0]['data']
+        
+        # 2. 将十六进制字符串转换为整数
+        read_data_int = int(raw_data_str, 16)
+        
+        self.agent.dut._log.info(f"读取到的数据 (整型): {hex(read_data_int)}")
+        
+        # 3. 返回整数，这样测试函数里的 assert 就能正常工作了
+        return read_data_int

@@ -20,9 +20,10 @@ class AHBAgent:
 
     async def reset(self):
         """执行复位序列"""
-        clk_sig = getattr(self.dut, self.config.signal_map["hclk"])
-        rst_sig = getattr(self.dut, self.config.signal_map["hresetn"])
+        clk_sig = getattr(self.dut, self.config.clk_name)
+        rst_sig = getattr(self.dut, self.config.rst_name)
         
+        self.dut.READY_CTRL.value = 1
         self.dut._log.info("执行复位...")
         rst_sig.value = 0 # 假设低电平复位
         await ClockCycles(clk_sig, self.config.reset_cycles)
@@ -31,7 +32,9 @@ class AHBAgent:
 
     def start_clock(self):
         """启动时钟"""
-        clk_sig = getattr(self.dut, self.config.signal_map["hclk"])
+        clk_sig = getattr(self.dut, self.config.clk_name)
+        rst_sig = getattr(self.dut, self.config.rst_name)
+
         cocotb.start_soon(Clock(clk_sig, self.config.clock_period_ns, unit="ns").start())
         self.dut._log.info(f"时钟已启动，周期={self.config.clock_period_ns}ns")
 
@@ -48,14 +51,14 @@ class AHBAgent:
                 self.dut, 
                 prefix="", 
                 signals=self.config.signal_map,
-                optional_signals=["hsel"]
+                optional_signals=self.config.optional_signals_map
             )
         except AttributeError as e:
             self.dut._log.error(f"信号映射失败：{e}")
             raise e
 
-        clk_sig = getattr(self.dut, self.config.signal_map["hclk"])
-        rst_sig = getattr(self.dut, self.config.signal_map["hresetn"])
+        clk_sig = getattr(self.dut, self.config.clk_name)
+        rst_sig = getattr(self.dut, self.config.rst_name)
 
         # 2. 实例化 Master (Driver)
         self.master = AHBLiteMaster(
@@ -86,7 +89,7 @@ class AHBAgent:
         if not self._initialized: self.build()
         if isinstance(addr, int): addr = [addr]
         if isinstance(data, int): data = [data]
-        return await self.master.write(address=addr, value=data, size=size)
+        return await self.master.write(address=addr, value=data, size=size,sync=0)
 
     async def read(self, addr, size=4):
         """高级读接口"""
