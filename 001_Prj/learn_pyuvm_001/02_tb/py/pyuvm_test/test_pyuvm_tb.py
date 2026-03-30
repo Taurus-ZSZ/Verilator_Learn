@@ -1,20 +1,14 @@
-#import uvm_pkg::*;
+# 在项目文件顶部
+# flake8: noqa: F403, F405
+# pylint: disable=wildcard-import, unused-wildcard-import
+# import uvm_pkg::*;
 import pyuvm
 from pyuvm import *
 
 
-
-
 @pyuvm.test()
-class AluTest(uvm_test):
-    def build_phase(self):
-        self.env = AluEnv("env",self)
-
-    def end_of_elaboration_phase(self):
-        self.test_all = TestAllSeq.create("test_all")
-
+class HellworldTest(uvm_test):
     async def run_phase(self):
-        self.raise_objection("Description")
-        await self.test_all.start()
-        self.drop_objection("Another description")
-    
+        self.raise_objection()
+        self.logger.info("Hell, world.")
+        self.drop_objection()

@@ -5,7 +5,7 @@ SIM ?= verilator
 TOPLEVEL_LANG ?= verilog
 
 # 默认目标：仿真计数器
-SIM_MODULE ?= ahb_test
+SIM_MODULE ?=pyuvm_test1
 COCOTB_TOPLEVEL ?= top
 COCOTB_TEST_MODULES ?= amba.test_ahb_slave
 
@@ -39,6 +39,17 @@ else ifeq ($(SIM_MODULE),ahb_test)
 		#export PYTHONPATH := $(PWD)/02_tb/py/counter:$(PYTHONPATH)
 		#export PYTHONPATH := $(PWD)/02_tb/py/apb:$(PYTHONPATH)
 		#export PYTHONPATH := $(PWD)/02_tb/py/amba:$(PYTHONPATH)
+		export PYTHONPATH := $(PWD)/02_tb/py:$(PYTHONPATH)
+else ifeq ($(SIM_MODULE),pyuvm_test1)
+    COCOTB_TOPLEVEL = top
+    COCOTB_TEST_MODULES = pyuvm_test.test_pyuvm_tb
+    VERILOG_SOURCES = $(PWD)/01_hdl/top.sv
+    VERILOG_SOURCES += $(PWD)/01_hdl/counter/counter.sv
+    VERILOG_SOURCES += $(PWD)/01_hdl/AMBA/ahb_wrapper.sv
+    VERILOG_SOURCES += $(PWD)/01_hdl/AMBA/AHB/ahb_slave.sv
+    VERILOG_SOURCES += $(PWD)/01_hdl/AMBA/APB/test_apb_wrapper.sv
+    VERILOG_SOURCES += $(PWD)/01_hdl/AMBA/APB/apb_if.sv
+    VERILOG_SOURCES += $(PWD)/01_hdl/AMBA/APB/regblock.sv
 		export PYTHONPATH := $(PWD)/02_tb/py:$(PYTHONPATH)
 else ifeq ($(SIM_MODULE),fifo)
     COCOTB_TOPLEVEL = top
