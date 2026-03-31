@@ -4,6 +4,7 @@
   1. [coctb 资源](https://github.com/cocotb/cocotb/wiki/Further-Resources)
   2. [coctb user guide](https://docs.cocotb.org/en/stable/quickstart.html)
   3. [pyuvm](https://github.com/pyuvm/pyuvm)
+  4. [pyuvm_deepwiki](https://deepwiki.com/pyuvm/pyuvm/1-pyuvm-overview)
 
 ## 安装
 ### python 虚拟环境配置
