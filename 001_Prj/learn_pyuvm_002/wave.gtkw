@@ -1,0 +1,38 @@
+[*]
+[*] GTKWave Analyzer v4.0.0-prealpha (2617703+) (w)1999-2022 BSI
+[*] Thu Mar 26 02:08:46 2026
+[*]
+[dumpfile] "/mnt/c/Work/my_work/Verilator/Verilator_Learn/001_Prj/learn_cocotb_003/dump.fst"
+[dumpfile_mtime] "Thu Mar 26 01:55:32 2026"
+[dumpfile_size] 2205
+[savefile] "/mnt/c/Work/my_work/Verilator/Verilator_Learn/001_Prj/learn_cocotb_003/wave.gtkw"
+[timestart] 0
+[size] 1427 600
+[pos] -1 -1
+*0.000000 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[treeopen] top.
+[treeopen] top.u_ahb_wrapper.
+[sst_width] 297
+[signals_width] 126
+[sst_expanded] 1
+[sst_vpaned_height] 149
+@22
+top.u_ahb_wrapper.u1_ahb_slave.HADDR[31:0]
+@28
+top.u_ahb_wrapper.u1_ahb_slave.HBURST[2:0]
+top.u_ahb_wrapper.u1_ahb_slave.HCLK
+@22
+top.u_ahb_wrapper.u1_ahb_slave.HRDATA[31:0]
+@28
+top.u_ahb_wrapper.u1_ahb_slave.HREADY
+top.u_ahb_wrapper.u1_ahb_slave.HRESETn
+top.u_ahb_wrapper.u1_ahb_slave.HRESP
+top.u_ahb_wrapper.u1_ahb_slave.HSELx
+top.u_ahb_wrapper.u1_ahb_slave.HSIZE[2:0]
+top.u_ahb_wrapper.u1_ahb_slave.HTRANS[1:0]
+@22
+top.u_ahb_wrapper.u1_ahb_slave.HWDATA[31:0]
+@28
+top.u_ahb_wrapper.u1_ahb_slave.HWRITE
+[pattern_trace] 1
+[pattern_trace] 0
