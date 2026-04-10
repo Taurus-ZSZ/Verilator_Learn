@@ -25,4 +25,39 @@
 
 \newpage
 
+### 关于接口与BFM 
+- 协议时序BFM 是否在Driver 中
+在早期的、或者编写不够严谨的 SV UVM 环境中，BFM 任务确实常常直接写在 Driver 类中。但更现代、更推荐的做法，是将它们封装在 interface 内部。
+💎 总结：一张表彻底理清
+
+| 职责 | SV UVM(传统) | SV UVM(现代/推荐) | pyuvm |
+| --------------- | --------------- | --------------- | --------------- |
+| 信号定义 | interface | interface | TinyAluBfm 类内持有的dut 句柄  |
+| 协议时序(BFM任务) | Driver 类 | interface 内部 | TinyAluBfm 类的协程 |
+| 事务调度(Driver职责) | Driver类 | Driver类(极简) | Driver类(极简) |
+|评价|❌ 耦合、难复用|✅ 解耦、高复用 | ✅ 语言级强制分离，更清晰 |
+
+
+所以，你之前的疑惑完全正确：在不少 SV 代码中，你确实会看到 Driver 承担了 BFM 的职责。
+但当你转向 pyuvm 时，它帮你一步到位，直接跨进了现代验证方法学的最佳实践。
+
+需要考虑到在单个模块与系统集成验证时关于信号路径的问题，这里推荐两种方案：
+- 小规模的模块: 在bfm 的参数列表中，定义对应的信号，然后再例化时通过指定对应信号的路径，可以理解成向函数传递参数，只不过参数时信号的句柄，可以时dut.core.valid 等等。
+- 大规模的设计:
+利用 ConfigDB 传递信号映射表（最灵活，用于复杂环境）
+创建一个配置对象，其中包含一个信号映射字典，BFM 根据字典中的名字去获取信号。
+```python
+# bfm_config.py
+class BfmConfig:
+    def __init__(self):
+        self.signal_map = {}  # 逻辑信号名 -> DUT信号句柄的映射
+
+# 在 BFM 中
+class TinyAluBfm:
+    def __init__(self, config: BfmConfig):
+        self.cfg = config
+        self.A = self.cfg.signal_map["A"]
+        self.B = self.cfg.signal_map["B"]
+        # ...
+```
 ## 疑问
